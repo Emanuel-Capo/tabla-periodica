@@ -1,0 +1,31 @@
+.alto {
+    height: 65px;
+}
+
+small {
+    font-size: 10px;
+}
+
+.col-1 {
+    width: 5.5555555555555%;
+}
+
+.pos {
+    position: relative;
+    top: -200px;
+}
+
+.pos2 {
+    position: relative;
+    left: -30px;
+    top: 10px;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+.global {
+    width: 1150px;
+    overflow-x: scroll;
+}

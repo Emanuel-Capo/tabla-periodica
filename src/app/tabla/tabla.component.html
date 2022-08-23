@@ -1,0 +1,107 @@
+<div class="global">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-6 pos2">
+            <app-reacciones [elemento]="elementoActual" [elementos]="elementos" [itsOK]="itsOK"></app-reacciones>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row fw-bold text-white text-center g-0 pos">
+        <div class="col-1" *ngFor="let elem of elementos">
+            <div class="m-1 bg-warning alto cursor" *ngIf="elem.tipo==='H'" [ngbTooltip]=hid ngbPopover [popoverTitle]=info>
+                <ng-template #hid><b>{{elem.nombre}}</b></ng-template>
+                <small>{{elem.nAtom}}</small><br>
+                <span class="fs-3">{{elem.simbolo}}</span>
+                <ng-template #info>
+                    <a class="d-grid" href="https://es.wikipedia.org/wiki/{{elem.nombre}}" target="_blank"><button class="btn btn-primary" ><b> Información</b></button></a>
+                </ng-template>
+            </div>
+            <div class="m-1 bg-success alto cursor" *ngIf="elem.tipo==='GN'" [ngbTooltip]=gasInerte [ngbPopover]=boton [popoverTitle]=info>
+                <ng-template #gasInerte><b>{{elem.nombre}}</b> <br> Gas Inerte</ng-template>
+                <small>{{elem.nAtom}}</small><br>
+                <span class="fs-3">{{elem.simbolo}}</span>
+                <ng-template #info>
+                    <a class="d-grid" href="https://es.wikipedia.org/wiki/{{elem.nombre}}" target="_blank"><button class="btn btn-primary" ><b> Información</b></button></a>
+                </ng-template>
+                <ng-template #boton>
+                    <p>No hay reacciones disponibles</p>
+                </ng-template>
+            </div>
+            <div class="m-1 bg-primary alto cursor" *ngIf="elem.tipo==='M'" [ngbTooltip]=metal [ngbPopover]=boton [popoverTitle]=info (click)="ok()">
+                <ng-template #metal><b>{{elem.nombre}}</b> <br> Metal</ng-template>
+                <ng-template #info>
+                    <a class="d-grid" href="https://es.wikipedia.org/wiki/{{elem.nombre}}" target="_blank" *ngIf="!(elem.nombre=='Radio') && !(elem.nombre=='Mercurio') && !(elem.nombre=='Indio')"><button class="btn btn-primary" ><b> Información</b></button></a>
+                    <a class="d-grid" href="https://es.wikipedia.org/wiki/{{elem.nombre}}_(elemento)" target="_blank" *ngIf="(elem.nombre=='Radio') || (elem.nombre=='Mercurio') || (elem.nombre=='Indio')"><button class="btn btn-primary" ><b> Información</b></button></a>
+                </ng-template>
+                <ng-template #boton>
+                    <div class="d-grid" *ngIf="elem.valencia">
+                        <button class="btn btn-info text-white" (click)="esteElemento(elem)" data-bs-toggle="modal" data-bs-target="#modal"><b> Reacción</b></button>
+
+                    </div>
+                    <p *ngIf="!elem.valencia">No hay reacciones disponibles</p>
+                </ng-template>
+                <small>{{elem.nAtom}}</small><br>
+                <span class="fs-3">{{elem.simbolo}}</span>
+            </div>
+            <div class="m-1 bg-danger alto cursor" *ngIf="elem.tipo==='NM'" [ngbTooltip]=noMetal [ngbPopover]=boton [popoverTitle]=info (click)="ok()">
+                <ng-template #noMetal><b>{{elem.nombre}}</b> <br> No Metal</ng-template>
+                <ng-template #info>
+                    <a class="d-grid" href="https://es.wikipedia.org/wiki/{{elem.nombre}}" target="_blank"><button class="btn btn-primary" ><b> Información</b></button></a>
+                </ng-template>
+                <ng-template #boton>
+                    <div class="d-grid" *ngIf="elem.valencia">
+                        <button class="btn btn-info text-white" (click)="esteElemento(elem)" data-bs-toggle="modal" data-bs-target="#modal"><b> Reacción</b></button>
+                    </div>
+                    <p *ngIf="!elem.valencia">No hay reacciones disponibles</p>
+                </ng-template>
+                <small>{{elem.nAtom}}</small><br>
+                <span class="fs-3">{{elem.simbolo}}</span>
+            </div>
+            <div class="m-1 bg-secondary alto cursor" *ngIf="elem.tipo==='L'" [ngbTooltip]=lant [ngbPopover]=boton [popoverTitle]=info>
+                <ng-template #lant><b>{{elem.nombre}}</b> <br>Lantánido (metal)</ng-template>
+                <small>{{elem.nAtom}}</small><br>
+                <span class="fs-3">{{elem.simbolo}}</span>
+                <ng-template #info>
+                    <a class="d-grid" href="https://es.wikipedia.org/wiki/{{elem.nombre}}" target="_blank"><button class="btn btn-primary" ><b> Información</b></button></a>
+                </ng-template>
+                <ng-template #boton>
+                    <p>No hay reacciones disponibles</p>
+                </ng-template>
+            </div>
+            <div class="m-1 bg-secondary alto cursor" *ngIf="elem.tipo==='A'" [ngbTooltip]=actin [ngbPopover]=boton [popoverTitle]=info>
+                <ng-template #actin><b>{{elem.nombre}}</b> <br>Actínido (metal)</ng-template>
+                <small>{{elem.nAtom}}</small><br>
+                <span class="fs-3">{{elem.simbolo}}</span>
+                <ng-template #info>
+                    <a class="d-grid" href="https://es.wikipedia.org/wiki/{{elem.nombre}}" target="_blank"><button class="btn btn-primary" ><b> Información</b></button></a>
+                </ng-template>
+                <ng-template #boton>
+                    <p>No hay reacciones disponibles</p>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+    <br>
+
+
+    <div class="pos">
+        <h2>Reacciones Inorgánicas:</h2>
+        <div class="row">
+            <div class="col-4">
+                <h5>Metal + O<sub>2</sub> <i class="bi bi-arrow-right fs-4"></i> <b>Óxido metálico</b></h5>
+            </div>
+            <div class="col-4">
+                <h5>Óxido metálico + H<sub>2</sub>O <i class="bi bi-arrow-right fs-4"></i> <b>Hidróxido</b></h5>
+            </div>
+            <div class="col-4">
+                <h5>Hidróxido + Ácido <i class="bi bi-arrow-right fs-4"></i> <b>Sal</b> + H<sub>2</sub>O</h5>
+            </div>
+            <div class="col-4">
+                <h5>No metal + O<sub>2</sub> <i class="bi bi-arrow-right fs-4"></i> <b>Óxido no metálico</b></h5>
+            </div>
+            <div class="col-4">
+                <h5>Óxido no metálico + H<sub>2</sub>O <i class="bi bi-arrow-right fs-4"></i> <b>Ácido</b></h5>
+            </div>
+        </div>
+    </div>
+</div>

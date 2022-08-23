@@ -1,0 +1,200 @@
+<div class=" container bg-light border border-primary border-4 rounded alto2">
+    <h4>Reacción Inorgánica: {{reaccionForm|uppercase}}</h4>
+
+    <!-- REACCIÓN -->
+    <div *ngIf="itsOK">
+        <!-- Óxido valencia impar -->
+        <h5 *ngIf="reaccion('oxido') && !par('e')"><span *ngIf="diatom()">2 </span><span *ngIf="!diatom()">4 </span>{{elemento.simbolo}}<sub *ngIf="diatom()">2</sub> + <span *ngIf="!siEs('e',1)">{{valElem}} </span>O<sub>2 </sub> <i class="bi bi-arrow-right fs-4"></i> 2 {{elemento.simbolo}}<sub>2</sub>O
+            <sub *ngIf="!siEs('e',1)">{{valElem}}</sub>
+        </h5>
+
+        <!-- Óxido valencia 2 -->
+        <h5 *ngIf="reaccion('oxido') && siEs('e',2)">2 {{elemento.simbolo}} + O<sub>2 </sub> <i class="bi bi-arrow-right fs-4"></i> 2 {{elemento.simbolo}}O</h5>
+
+        <!-- Óxido valencia 4 -->
+        <h5 *ngIf="reaccion('oxido') && siEs('e',4)">{{elemento.simbolo}} + O<sub>2 </sub> <i class="bi bi-arrow-right fs-4"></i> {{elemento.simbolo}}O<sub>2</sub></h5>
+
+        <!-- Óxido valencia 6 -->
+        <h5 *ngIf="reaccion('oxido') && siEs('e',6)">2 {{elemento.simbolo}} + 3 O<sub>2 </sub> <i class="bi bi-arrow-right fs-4"></i> 2 {{elemento.simbolo}}O<sub>3</sub></h5>
+
+        <!-- Hidróxido -->
+        <h5 *ngIf="reaccion('hidroxido')">{{elemento.simbolo}}<sub *ngIf="!par('e')">2</sub>O<sub *ngIf="siEs('e',4)">2</sub><sub *ngIf="siEs('e',3)">3</sub> + <span *ngIf="siEs('e',3)">3 </span><span *ngIf="siEs('e',4)">2 </span>H<sub>2</sub>O <i class="bi bi-arrow-right fs-4"></i>
+            <span *ngIf="!par('e')">2</span> {{elemento.simbolo}}(OH)<sub *ngIf="!siEs('e',1)">{{valElem}}</sub>
+        </h5>
+
+        <!-- Ácido valencia par -->
+        <h5 *ngIf="(reaccion('acido') || reaccion('acido ')) && par('e')">{{elemento.simbolo}}O<sub *ngIf="!siEs('e',2)">{{valElem/2}}</sub> + H<sub>2</sub>O <i class="bi bi-arrow-right fs-4"></i> H<sub>2</sub>{{elemento.simbolo}}O<sub>{{valElem/2+1}}</sub></h5>
+
+        <!-- Ácido valencia impar -->
+        <h5 *ngIf="(reaccion('acido') || reaccion('acido ')) && !par('e')">{{elemento.simbolo}}<sub>2</sub>O<sub *ngIf="!siEs('e',1)">{{valElem}}</sub> + H<sub>2</sub>O <i class="bi bi-arrow-right fs-4"></i> 2 H{{elemento.simbolo}}O<sub *ngIf="!siEs('e',1)">{{(valElem/1+1)/2}}</sub></h5>
+
+        <!-- Hidrácido -->
+        <h5 *ngIf="reaccion('hidracido')">{{elemento.simbolo}}<sub>2</sub> +<span *ngIf="esElem('S')"> 2</span> H<sub>2</sub> <i class="bi bi-arrow-right fs-4"></i> 2 <b>H<sub *ngIf="esElem('S')">2</sub>{{elemento.simbolo}}</b></h5>
+
+        <!-- Sal de metal valencia par -->
+        <h5 *ngIf="reaccion('sal') && par('m')">{{salMetal.simbolo}}(OH)<sub>{{valSalMetal}}</sub> + <span *ngIf="par('nm') && siEs('m',4)">2 </span><span *ngIf="!par('nm')">{{valSalMetal}} </span>H<sub *ngIf="par('nm')">2</sub>{{salNoMetal.simbolo}}O<sub *ngIf="par('nm')">{{valSalNoMetal/2+1}}</sub>
+            <sub *ngIf="!par('nm') && !siEs('nm',1)">{{(valSalNoMetal/1+1)/2}}</sub> <i class="bi bi-arrow-right fs-4"></i> {{salMetal.simbolo}}({{salNoMetal.simbolo}}O<sub *ngIf="par('nm')">{{valSalNoMetal/2+1}}</sub>
+            <sub *ngIf="!par('nm') && !siEs('nm',1)">{{(valSalNoMetal/1+1)/2}}</sub>)<sub *ngIf="par('nm') && siEs('m',4)">2</sub><sub *ngIf="!par('nm')">{{valSalMetal}}</sub> + {{valSalMetal}} H<sub>2</sub>O</h5>
+
+        <!-- Sal de metal valencia impar -->
+        <h5 *ngIf="reaccion('sal') && !par('m')"><span *ngIf="par('nm')">2 </span>{{salMetal.simbolo}}(OH)<sub *ngIf="siEs('m',3)">3</sub> + <span *ngIf="siEs('m',3)">3 </span>H<sub *ngIf="par('nm')">2</sub>{{salNoMetal.simbolo}}O<sub *ngIf="par('nm')">{{valSalNoMetal/2+1}}</sub>
+            <sub *ngIf="!par('nm') && !siEs('nm',1)">{{(valSalNoMetal/1+1)/2}}</sub> <i class="bi bi-arrow-right fs-4"></i> {{salMetal.simbolo}}<sub *ngIf="par('nm')">2</sub>({{salNoMetal.simbolo}}O<sub *ngIf="par('nm')">{{valSalNoMetal/2+1}}</sub>
+            <sub *ngIf="!par('nm') && !siEs('nm',1)">{{(valSalNoMetal/1+1)/2}}</sub>)<sub *ngIf="siEs('m',3)">3</sub> + <span *ngIf="par('nm')">{{valSalMetal*2}} </span><span *ngIf="!par('nm') && siEs('m',3)">3 </span>H<sub>2</sub>O</h5>
+
+        <!-- Sal de hidrácido -->
+        <h5 *ngIf="reaccion('sal de hidracido')"><span *ngIf="!par('m') && par('nm')">2 </span>{{salMetal.simbolo}}(OH)<sub *ngIf="siEs('m',2)">2</sub><sub *ngIf="siEs('m',3)">3</sub><sub *ngIf="siEs('m',4)">4</sub> + <span *ngIf="siEs('m',2) && siEs('nm',1) || siEs('m',4) && siEs('nm',2)">2 </span>
+            <span *ngIf="siEs('m',3)">3 </span><span *ngIf="siEs('m',4) && siEs('nm',1)">4 </span>H<sub *ngIf="siEs('nm',2)">2</sub>{{salNoMetal.simbolo}} <i class="bi bi-arrow-right fs-4"></i> {{salMetal.simbolo}}<sub *ngIf="!par('m') && par('nm')">2</sub>{{salNoMetal.simbolo}}
+            <sub *ngIf="siEs('m',2) && siEs('nm',1) || siEs('m',4) && siEs('nm',2)">2</sub><sub *ngIf="siEs('m',3)">3</sub><sub *ngIf="siEs('m',4) && siEs('nm',1)">4</sub> + <span *ngIf="siEs('m',1) && siEs('nm',2) || siEs('m',2)">2 </span><span *ngIf="siEs('m',3) && siEs('nm',1)">3 </span>
+            <span *ngIf="siEs('m',3) && siEs('nm',2)">6 </span>
+            <span *ngIf="siEs('m',4)">4 </span>H<sub>2</sub>O</h5>
+
+        <!-- NOMENCLATURA -->
+
+        <!-- Óxido tradicional -->
+        <h6 *ngIf="reaccion('oxido')">Nomenclatura tradicional: <b>óxido <span *ngIf="valLength('e', 1)">de {{elemento.nombre|lowercase}}</span><span *ngIf="valLength('e',2) && esVal('e', 0)">{{elemento.nomenclatura}}oso</span><span *ngIf="valLength('e',2) && esVal('e',1)">{{elemento.nomenclatura}}ico</span>
+        <span *ngIf="valLength('e',3) && esVal('e',0)">hipo{{elemento.nomenclatura}}<span *ngIf="esElem('S')">ur</span>oso</span>
+        <span *ngIf="valLength('e',3) && esVal('e',1)">{{elemento.nomenclatura}}<span *ngIf="esElem('S')">ur</span>oso</span><span *ngIf="valLength('e',3) && esVal('e',2)">{{elemento.nomenclatura}}<span *ngIf="esElem('S')">ur</span>ico</span><span *ngIf="valLength('e',4) && esVal('e',0)">hipo{{elemento.nomenclatura}}oso</span>
+        <span *ngIf="valLength('e',4) && esVal('e',1)">{{elemento.nomenclatura}}oso</span>
+        <span *ngIf="valLength('e',4) && esVal('e',2)">{{elemento.nomenclatura}}ico</span><span *ngIf="valLength('e',4) && esVal('e',3)">per{{elemento.nomenclatura}}ico</span></b></h6>
+
+        <!-- Óxido Stock -->
+        <h6 *ngIf="reaccion('oxido')">Nomenclatura Stock: <b>óxido de {{elemento.nombre|lowercase}}({{valElem|romano}})</b></h6>
+
+        <!-- Óxido sistemática -->
+        <h6 *ngIf="reaccion('oxido')">Nomenclatura sistemática: <b><span *ngIf="siEs('e',1) || siEs('e',2)">mon</span><span *ngIf="siEs('e',4)">di</span><span *ngIf="siEs('e',3) || siEs('e',6)">tri</span><span *ngIf="siEs('e',5)">pent</span><span *ngIf="siEs('e',7)">hept</span>óxido de
+        <span *ngIf="!par('e')">di</span>{{elemento.nombre|lowercase}}</b></h6>
+
+        <!-- hidróxido tradicional -->
+        <h6 *ngIf="reaccion('hidroxido')">Nomenclatura tradicional: <b>hidróxido <span *ngIf="valLength('e',1)">de {{elemento.nombre|lowercase}}</span><span *ngIf="valLength('e',2) && esVal('e',0)">{{elemento.nomenclatura}}oso</span><span *ngIf="valLength('e',2) && esVal('e',1)">{{elemento.nomenclatura}}ico</span></b></h6>
+
+        <!-- hidróxido Stock -->
+        <h6 *ngIf="reaccion('hidroxido')">Nomenclatura Stock: <b>hidróxido de {{elemento.nombre|lowercase}}({{valElem|romano}})</b></h6>
+
+        <!-- hidróxido sistemática -->
+        <h6 *ngIf="reaccion('hidroxido')">Nomenclatura sistemática: <b><span *ngIf="siEs('e',1)">mono</span><span *ngIf="siEs('e',2)">di</span><span *ngIf="siEs('e',3)">tri</span><span *ngIf="siEs('e',4)">tetra</span>hidróxido de {{elemento.nombre|lowercase}}</b></h6>
+
+        <!-- ácido tradicional -->
+        <h6 *ngIf="reaccion('acido') || reaccion('acido ')">Nomenclatura tradicional: <b>ácido <span *ngIf="valLength('e',1)">de {{elemento.nombre|lowercase}}</span><span *ngIf="valLength('e',2) && esVal('e',0)">{{elemento.nomenclatura}}oso</span><span *ngIf="valLength('e',2) && esVal('e',1)">{{elemento.nomenclatura}}ico</span>
+        <span *ngIf="valLength('e',3) && esVal('e',0)"><span *ngIf="esElem('S')">hiposulfuroso</span><span *ngIf="esElem('Mn')">manganoso</span></span>
+        <span *ngIf="valLength('e',3) && esVal('e',1)"><span *ngIf="esElem('S')">sulfuroso</span><span *ngIf="esElem('Mn')">mangánico</span></span><span *ngIf="valLength('e',3) && esVal('e',2)"><span *ngIf="esElem('S')">sulfúrico</span><span *ngIf="esElem('Mn')">permanganico</span></span><span *ngIf="valLength('e',4) && esVal('e',0)">hipo{{elemento.nomenclatura}}oso</span>
+        <span *ngIf="valLength('e',4) && esVal('e',1)">{{elemento.nomenclatura}}oso</span>
+        <span *ngIf="valLength('e',4) && esVal('e',2)">{{elemento.nomenclatura}}ico</span><span *ngIf="valLength('e',4) && esVal('e',3)">per{{elemento.nomenclatura}}ico</span></b></h6>
+
+        <!-- ácido Stock -->
+        <h6 *ngIf="reaccion('acido') || reaccion('acido ')">Nomenclatura Stock: <b>{{elemento.nomenclatura}}ato ({{valElem|romano}}) de hidrógeno</b></h6>
+
+        <!-- ácido sistemática -->
+        <h6 *ngIf="reaccion('acido') || reaccion('acido ')">Nomenclatura sistemática: <b><span *ngIf="siEs('e',1)">mon</span><span *ngIf="siEs('e',2) || siEs('e',3)">di</span><span *ngIf="siEs('e',4) || siEs('e',5)">tri</span><span *ngIf="siEs('e',6) || siEs('e',7)">tetra</span>oxo{{elemento.nomenclatura}}ato
+        de hidrógeno</b></h6>
+
+        <!-- hidrácido Compuesto en disolución -->
+        <h6 *ngIf="reaccion('hidracido')">Compuesto en disolución: <b>ácido {{elemento.nomenclatura}}hídrico</b></h6>
+
+        <!-- hidrácido Compuesto en estado puro -->
+        <h6 *ngIf="reaccion('hidracido')">Compuesto en estado puro: <b>{{elemento.nomenclatura}}uro de hidrógeno</b></h6>
+
+        <!-- Sal tradicional -->
+        <h6 *ngIf="reaccion('sal')">Nomenclatura tradicional: <b><span *ngIf="valLength('nm',4) && esVal('nm',0) || valLength('nm',3) && esVal('nm',0)">hipo</span><span *ngIf="valLength('nm',4) && esVal('nm',3)">per</span>{{salNoMetal.nomenclatura}}<span *ngIf="valLength('nm',2) && esVal('nm',0) || valLength('nm',3) && esVal('nm',0) || valLength('nm',3) && esVal('nm',1) || valLength('nm',4) && esVal('nm',0) || valLength('nm',4) && esVal('nm',1)">ito</span>
+        <span *ngIf="valLength('nm',1) || valLength('nm',2) && esVal('nm',1) || valLength('nm',3) && esVal('nm',2) || valLength('nm',4) && esVal('nm',2) || valLength('nm',4) && esVal('nm',3)">ato</span><span *ngIf="valLength('m',1)"> de {{salMetal.nombre|lowercase}}</span>
+        <span *ngIf="valLength('m',2) && esVal('m',0)"> {{salMetal.nomenclatura}}oso</span><span *ngIf="valLength('m',2) && esVal('m',1)"> {{salMetal.nomenclatura}}ico</span></b></h6>
+
+        <!-- sal Stock -->
+        <h6 *ngIf="reaccion('sal')">Nomenclatura Stock: <b>{{salNoMetal.nomenclatura}}ato ({{valSalNoMetal|romano}}) de {{salMetal.nombre|lowercase}} ({{valSalMetal|romano}})</b></h6>
+
+        <!-- sal sistemáica -->
+        <h6 *ngIf="reaccion('sal')">Nomenclatura sistemática: <b><span *ngIf="siEs('m',2) && !par('nm') || siEs('m',4) && par('nm')">bis-</span><span *ngIf="siEs('m',3)">tris-</span><span *ngIf="siEs('m',4) && !par('nm')">tetrakis-</span><span *ngIf="siEs('nm',1)">mon</span><span *ngIf="siEs('nm',2) || siEs('nm',3)">di</span>
+        <span *ngIf="siEs('nm',4) || siEs('nm',5)">tri</span><span *ngIf="siEs('nm',6) || siEs('nm',7)">tetra</span>oxo{{salNoMetal.nomenclatura}}ato de <span *ngIf="!par('m') && par('nm')">di</span>{{salMetal.nombre|lowercase}}</b></h6>
+
+        <!-- Sal de hidrácido tradicional -->
+        <h6 *ngIf="reaccion('sal de hidracido')">Nomenclatura tradicional: <b>{{salNoMetal.nomenclatura}}uro<span *ngIf="valLength('m',1)"> de {{salMetal.nombre|lowercase}}</span>
+            <span *ngIf="valLength('m',2) && esVal('m',0)"> {{salMetal.nomenclatura}}oso</span><span *ngIf="valLength('m',2) && esVal('m',1)"> {{salMetal.nomenclatura}}ico</span></b></h6>
+
+        <!-- Sal de hidrácido Stock -->
+        <h6 *ngIf="reaccion('sal de hidracido')">Nomenclatura Stock: <b>{{salNoMetal.nomenclatura}}uro de {{salMetal.nombre|lowercase}} ({{valSalMetal|romano}})</b></h6>
+
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="modal">
+    <form [formGroup]="miFormulario" (ngSubmit)="guardar()">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Elemento: {{elemento.simbolo}} ({{elemento.nombre}})</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="reset()"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="m-1">Valencia:</p>
+                    <div *ngIf="!reaccionF('hidracido') && !reaccionF('acido ') && !(reaccionF('sal de hidracido') && formaHidracido())">
+                        <div class="form-check" *ngFor="let val of elemento.valencia">
+                            <input class="form-check-input" type="radio" name="valencia" value={{val}} id="e{{val}}" formControlName="valencia">
+                            <label class="form-check-label" for="e{{val}}">
+                                {{val}}
+                            </label>
+                        </div>
+                    </div>
+                    <div *ngIf="reaccionF('hidracido') || reaccionF('sal de hidracido') && !metal()" class="form-check">
+                        <input class="form-check-input" type="radio" name="valencia" value={{elemento.valencia![0]}} formControlName="valencia" id="hid">
+                        <label class="form-check-label" for="hid">
+                            {{elemento.valencia![0]}}
+                        </label>
+                    </div>
+                    <div *ngIf="reaccionF('acido ')">
+                        <div class="form-check" *ngFor="let val of elemento.valenciaNM">
+                            <input class="form-check-input" type="radio" name="valencia" value={{val}} id="e{{val}}" formControlName="valencia">
+                            <label class="form-check-label" for="e{{val}}">
+                                {{val}}
+                            </label>
+                        </div>
+                    </div>
+                    <p>Seleccione el compuesto a formar:</p>
+                    <select class="form-select" formControlName="reaccion">
+                        <option selected>Seleccionar</option>
+                        <option value="oxido">Óxido</option>
+                        <option value="hidroxido" *ngIf="metal()">Hidróxido</option>
+                        <option value="acido" *ngIf="!metal()">Ácido</option>
+                        <option value="acido " *ngIf="esElem('Mn') || esElem('Cr')">Ácido</option>
+                        <option value="sal">Sal</option>
+                        <!-- <option value="hidruro" *ngIf="metal()">Hidruro</option> -->
+                        <option value="hidracido" *ngIf="formaHidracido()">Hidrácido</option>
+                        <option value="sal de hidracido" *ngIf="metal() || formaHidracido()">Sal de hidrácido</option>
+                    </select>
+                    <div *ngIf="reaccionF('sal') || reaccionF('sal de hidracido')">
+                        <hr>
+                        <p>Seleccione otro elemento para formar la sal:</p>
+                        <select class="form-select" *ngIf="metal() && reaccionF('sal')" formControlName="salElem">
+                                <option *ngFor="let elem of noMetales" [ngValue]=elem >{{elem.simbolo}} ({{elem.nombre}})</option>
+                        </select>
+                        <select class="form-select" *ngIf="metal() && reaccionF('sal de hidracido')" formControlName="salElem">
+                            <option *ngFor="let elem of noMetalesHid" [ngValue]=elem >{{elem.simbolo}} ({{elem.nombre}})</option>
+                    </select>
+                        <select class="form-select" *ngIf="!metal()" formControlName="salElem">
+                            <option *ngFor="let elem of metales" [ngValue]=elem >{{elem.simbolo}} ({{elem.nombre}})</option>
+                        </select>
+
+                        <p class="m-1" *ngIf="miFormulario.value.salElem.nombre">Valencia de {{miFormulario.value.salElem.nombre}}</p>
+                        <div *ngIf="reaccionF('sal') || reaccionF('sal de hidracido') && !metal()">
+                            <div class="form-check" *ngFor="let val of miFormulario.value.salElem.valencia">
+                                <input class="form-check-input" type="radio" name="salValencia" value={{val}} formControlName="salValencia" id="s{{val}}">
+                                <label class="form-check-label" for="s{{val}}">
+                                    {{val}}
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="reaccionF('sal de hidracido') && metal()" class="form-check">
+                            <input class="form-check-input" type="radio" name="salValencia" value={{miFormulario.value.salElem.valencia![0]}} formControlName="salValencia" id="salHid" *ngIf="miFormulario.value.salElem.nombre">
+                            <label class="form-check-label" for="salHid" *ngIf="miFormulario.value.salElem.nombre">
+                                {{miFormulario.value.salElem.valencia![0]}}
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal" [disabled]="miFormulario.invalid && !reaccionF('sal') || miFormulario.invalid && !reaccionF('sal de hidracido') || reaccionF('sal') && miFormulario.value.salValencia===0 || reaccionF('sal de hidracido') && miFormulario.value.salValencia===0">Reacción</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

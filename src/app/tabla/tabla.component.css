@@ -10,6 +10,10 @@ small {
     width: 5.5555555555555%;
 }
 
+.col-2a{
+    width: 14%;
+}
+
 .pos {
     position: relative;
     top: -200px;
@@ -21,6 +25,11 @@ small {
     top: 10px;
 }
 
+.pos3 {
+    position: relative;
+    top: -100px;
+}
+
 .cursor {
     cursor: pointer;
 }
@@ -28,4 +37,16 @@ small {
 .global {
     width: 1150px;
     overflow-x: scroll;
+}
+
+svg{
+    height: 25px;
+}
+
+a{
+    text-decoration: none;
+}
+
+.alto2{
+height: 200px;
 }

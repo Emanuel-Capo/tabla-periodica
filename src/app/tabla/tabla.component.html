@@ -34,11 +34,11 @@
                     <a class="d-grid" href="https://es.wikipedia.org/wiki/{{elem.nombre}}_(elemento)" target="_blank" *ngIf="(elem.nombre=='Radio') || (elem.nombre=='Mercurio') || (elem.nombre=='Indio')"><button class="btn btn-primary" ><b> Información</b></button></a>
                 </ng-template>
                 <ng-template #boton>
-                    <div class="d-grid" *ngIf="elem.valencia">
+                    <div class="d-grid" *ngIf="elem.valenciaM || elem.valenciaNM">
                         <button class="btn btn-info text-white" (click)="esteElemento(elem)" data-bs-toggle="modal" data-bs-target="#modal"><b> Reacción</b></button>
 
                     </div>
-                    <p *ngIf="!elem.valencia">No hay reacciones disponibles</p>
+                    <p *ngIf="!(elem.valenciaM || elem.valenciaNM)">No hay reacciones disponibles</p>
                 </ng-template>
                 <small>{{elem.nAtom}}</small><br>
                 <span class="fs-3">{{elem.simbolo}}</span>
@@ -49,10 +49,10 @@
                     <a class="d-grid" href="https://es.wikipedia.org/wiki/{{elem.nombre}}" target="_blank"><button class="btn btn-primary" ><b> Información</b></button></a>
                 </ng-template>
                 <ng-template #boton>
-                    <div class="d-grid" *ngIf="elem.valencia">
+                    <div class="d-grid" *ngIf="elem.valenciaM || elem.valenciaNM">
                         <button class="btn btn-info text-white" (click)="esteElemento(elem)" data-bs-toggle="modal" data-bs-target="#modal"><b> Reacción</b></button>
                     </div>
-                    <p *ngIf="!elem.valencia">No hay reacciones disponibles</p>
+                    <p *ngIf="!(elem.valenciaM || elem.valenciaNM)">No hay reacciones disponibles</p>
                 </ng-template>
                 <small>{{elem.nAtom}}</small><br>
                 <span class="fs-3">{{elem.simbolo}}</span>
@@ -85,23 +85,87 @@
 
 
     <div class="pos">
+        <hr>
         <h2>Reacciones Inorgánicas:</h2>
         <div class="row">
             <div class="col-4">
-                <h5>Metal + O<sub>2</sub> <i class="bi bi-arrow-right fs-4"></i> <b>Óxido metálico</b></h5>
+                <h5>Metal + O<sub>2</sub> <i class="bi bi-arrow-right fs-4"></i> <b class="text-primary"> Óxido metálico</b></h5>
             </div>
             <div class="col-4">
-                <h5>Óxido metálico + H<sub>2</sub>O <i class="bi bi-arrow-right fs-4"></i> <b>Hidróxido</b></h5>
+                <h5>Óxido metálico + H<sub>2</sub>O <i class="bi bi-arrow-right fs-4"></i> <b class="text-primary"> Hidróxido</b></h5>
+            </div>
+            <div class="col-4"></div>
+            <div class="col-4">
+                <h5>No metal + O<sub>2</sub> <i class="bi bi-arrow-right fs-4"></i> <b class="text-danger"> Anhídrido</b></h5>
             </div>
             <div class="col-4">
-                <h5>Hidróxido + Ácido <i class="bi bi-arrow-right fs-4"></i> <b>Sal</b> + H<sub>2</sub>O</h5>
+                <h5>Anhídrido + H<sub>2</sub>O <i class="bi bi-arrow-right fs-4"></i> <b class="text-danger"> Ácido</b></h5>
+            </div>            
+            <div class="col-4">
+                <h5>No metal + H<sub>2</sub> <i class="bi bi-arrow-right fs-4"></i> <b class="text-danger"> Hidrácido</b></h5>
             </div>
             <div class="col-4">
-                <h5>No metal + O<sub>2</sub> <i class="bi bi-arrow-right fs-4"></i> <b>Óxido no metálico</b></h5>
+                <h5><b class="text-primary"> Hidróxido </b>+<b class="text-danger"> Ácido </b><i class="bi bi-arrow-right fs-4"></i> <b class="text-success"> Sal</b> + H<sub>2</sub>O</h5>
             </div>
-            <div class="col-4">
-                <h5>Óxido no metálico + H<sub>2</sub>O <i class="bi bi-arrow-right fs-4"></i> <b>Ácido</b></h5>
+            <div class="col-8">
+                <h5><b class="text-primary"> Hidróxido </b>+<b class="text-danger"> Hidrácido </b><i class="bi bi-arrow-right fs-4"></i> <b class="text-success"> Sal de hidrácido</b> + H<sub>2</sub>O</h5>
             </div>
         </div>
+        <hr>
+        <h2>¿Sabías que?</h2>
+        <h5><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M160 442.5C149.1 446.1 139.2 448 128 448C74.98 448 32 405 32 352V64C14.33 64 0 49.67 0 32C0 14.33 14.33 0 32 0H224C241.7 0 256 14.33 256 32C256 49.67 241.7 64 224 64V309.9L175 389.4C165.2 405.4 160 423.8 160 442.5zM96 160H160V64H96V160zM512 0C529.7 0 544 14.33 544 32C544 49.67 529.7 64 512 64V214.9L629.7 406.2C636.4 417.2 640 429.7 640 442.6C640 480.9 608.9 512 570.6 512H261.4C223.1 512 191.1 480.9 191.1 442.6C191.1 429.7 195.6 417.2 202.3 406.2L319.1 214.9V64C302.3 64 287.1 49.67 287.1 32C287.1 14.33 302.3 0 319.1 0L512 0zM384 64V224C384 229.9 382.4 235.7 379.3 240.8L330.5 320H501.5L452.7 240.8C449.6 235.7 448 229.9 448 224V64H384z"/></svg> Solo los no metales Fluor (F), Cloro (Cl), Bromo (Br), Iodo (I) y Azufre (S) pueden formar hidrácidos y solo con su valencia más pequeña.</h5>
+        <h5><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M160 442.5C149.1 446.1 139.2 448 128 448C74.98 448 32 405 32 352V64C14.33 64 0 49.67 0 32C0 14.33 14.33 0 32 0H224C241.7 0 256 14.33 256 32C256 49.67 241.7 64 224 64V309.9L175 389.4C165.2 405.4 160 423.8 160 442.5zM96 160H160V64H96V160zM512 0C529.7 0 544 14.33 544 32C544 49.67 529.7 64 512 64V214.9L629.7 406.2C636.4 417.2 640 429.7 640 442.6C640 480.9 608.9 512 570.6 512H261.4C223.1 512 191.1 480.9 191.1 442.6C191.1 429.7 195.6 417.2 202.3 406.2L319.1 214.9V64C302.3 64 287.1 49.67 287.1 32C287.1 14.33 302.3 0 319.1 0L512 0zM384 64V224C384 229.9 382.4 235.7 379.3 240.8L330.5 320H501.5L452.7 240.8C449.6 235.7 448 229.9 448 224V64H384z"/></svg> Tanto el Manganeso (Mn) como el Cromo (Cr) pueden actuar como metales con sus valencias mas bajas y como no metales con sus valencias más altas.</h5>
+        <h5><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M160 442.5C149.1 446.1 139.2 448 128 448C74.98 448 32 405 32 352V64C14.33 64 0 49.67 0 32C0 14.33 14.33 0 32 0H224C241.7 0 256 14.33 256 32C256 49.67 241.7 64 224 64V309.9L175 389.4C165.2 405.4 160 423.8 160 442.5zM96 160H160V64H96V160zM512 0C529.7 0 544 14.33 544 32C544 49.67 529.7 64 512 64V214.9L629.7 406.2C636.4 417.2 640 429.7 640 442.6C640 480.9 608.9 512 570.6 512H261.4C223.1 512 191.1 480.9 191.1 442.6C191.1 429.7 195.6 417.2 202.3 406.2L319.1 214.9V64C302.3 64 287.1 49.67 287.1 32C287.1 14.33 302.3 0 319.1 0L512 0zM384 64V224C384 229.9 382.4 235.7 379.3 240.8L330.5 320H501.5L452.7 240.8C449.6 235.7 448 229.9 448 224V64H384z"/></svg> Los anhídridos de Fosforo (F) y Arsénico (As) pueden formar diferentes ácidos combinandosé con una, dos o tres moléculas de agua.</h5>
+<hr>
+
     </div>
+    <div class="pos3">
+        <div class="row">
+            <div class="col-4 text-center"><svg class="alto2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 224C238.4 224 223.1 238.4 223.1 256S238.4 288 256 288c17.63 0 32-14.38 32-32S273.6 224 256 224zM470.2 128c-10.88-19.5-40.51-50.75-116.3-41.88C332.4 34.88 299.6 0 256 0S179.6 34.88 158.1 86.12C82.34 77.38 52.71 108.5 41.83 128c-16.38 29.38-14.91 73.12 25.23 128c-40.13 54.88-41.61 98.63-25.23 128c29.13 52.38 101.6 43.63 116.3 41.88C179.6 477.1 212.4 512 256 512s76.39-34.88 97.9-86.13C368.5 427.6 441 436.4 470.2 384c16.38-29.38 14.91-73.13-25.23-128C485.1 201.1 486.5 157.4 470.2 128zM95.34 352c-4.001-7.25-.1251-24.75 15-48.25c6.876 6.5 14.13 12.87 21.88 19.12c1.625 13.75 4.001 27.13 6.751 40.13C114.3 363.9 99.09 358.6 95.34 352zM132.2 189.1C124.5 195.4 117.2 201.8 110.3 208.2C95.22 184.8 91.34 167.2 95.34 160c3.376-6.125 16.38-11.5 37.88-11.5c1.75 0 3.876 .375 5.751 .375C136.1 162.2 133.8 175.6 132.2 189.1zM256 64c9.502 0 22.25 13.5 33.88 37.25C278.6 105 267.4 109.3 256 114.1C244.6 109.3 233.4 105 222.1 101.2C233.7 77.5 246.5 64 256 64zM256 448c-9.502 0-22.25-13.5-33.88-37.25C233.4 407 244.6 402.7 256 397.9c11.38 4.875 22.63 9.135 33.88 12.89C278.3 434.5 265.5 448 256 448zM256 336c-44.13 0-80.02-35.88-80.02-80S211.9 176 256 176s80.02 35.88 80.02 80S300.1 336 256 336zM416.7 352c-3.626 6.625-19 11.88-43.63 11c2.751-12.1 5.126-26.38 6.751-40.13c7.752-6.25 15-12.63 21.88-19.12C416.8 327.2 420.7 344.8 416.7 352zM401.7 208.2c-6.876-6.5-14.13-12.87-21.88-19.12c-1.625-13.5-3.876-26.88-6.751-40.25c1.875 0 4.001-.375 5.751-.375c21.5 0 34.51 5.375 37.88 11.5C420.7 167.2 416.8 184.8 401.7 208.2z"/></svg>                
+            </div>
+
+            <div class="col-4">            
+<div class="row">
+    <div class="col-12">
+        <h4>Creado por: </h4>
+    </div>
+</div>
+        <div class="row fw-bold text-white text-center g-0">
+            <div class="col-2a m-1 bg-success alto cursor" [ngbPopover]=boton [popoverTitle]=info>
+                    <small>1</small><br>
+                    <span class="fs-3">Em</span>
+                    <ng-template #info>
+                        <h5 class="text-black text-center">Emanuel Capo</h5>
+                    </ng-template>
+                    <ng-template #boton>                  
+                            <a class="d-grid" href="https://www.linkedin.com/in/emanuel-capo" target="_blank"><button class="btn btn-info"><b>Linkedin</b></button></a>    
+                    </ng-template>
+            </div>
+            <div class="col-2a m-1 bg-success alto">
+                <small>2</small><br>
+                <span class="fs-3">An</span>
+        </div>
+        <div class="col-2a m-1 bg-success alto" >
+            <small>3</small><br>
+            <span class="fs-3">U</span>
+        </div>
+        <div class="col-2a m-1 bg-success alto">
+            <small>4</small><br>
+            <span class="fs-3">El</span>
+        </div>
+        <div class="col-2a m-1 bg-warning alto">
+            <small>5</small><br>
+            <span class="fs-3">Ca</span>
+        </div>
+        <div class="col-2 m-1 bg-warning alto">
+            <small>6</small><br>
+            <span class="fs-3">Po</span>
+        </div>
+        </div>
+        
+    </div>
+    <div class="col-4 text-center"><svg class="alto2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 224C238.4 224 223.1 238.4 223.1 256S238.4 288 256 288c17.63 0 32-14.38 32-32S273.6 224 256 224zM470.2 128c-10.88-19.5-40.51-50.75-116.3-41.88C332.4 34.88 299.6 0 256 0S179.6 34.88 158.1 86.12C82.34 77.38 52.71 108.5 41.83 128c-16.38 29.38-14.91 73.12 25.23 128c-40.13 54.88-41.61 98.63-25.23 128c29.13 52.38 101.6 43.63 116.3 41.88C179.6 477.1 212.4 512 256 512s76.39-34.88 97.9-86.13C368.5 427.6 441 436.4 470.2 384c16.38-29.38 14.91-73.13-25.23-128C485.1 201.1 486.5 157.4 470.2 128zM95.34 352c-4.001-7.25-.1251-24.75 15-48.25c6.876 6.5 14.13 12.87 21.88 19.12c1.625 13.75 4.001 27.13 6.751 40.13C114.3 363.9 99.09 358.6 95.34 352zM132.2 189.1C124.5 195.4 117.2 201.8 110.3 208.2C95.22 184.8 91.34 167.2 95.34 160c3.376-6.125 16.38-11.5 37.88-11.5c1.75 0 3.876 .375 5.751 .375C136.1 162.2 133.8 175.6 132.2 189.1zM256 64c9.502 0 22.25 13.5 33.88 37.25C278.6 105 267.4 109.3 256 114.1C244.6 109.3 233.4 105 222.1 101.2C233.7 77.5 246.5 64 256 64zM256 448c-9.502 0-22.25-13.5-33.88-37.25C233.4 407 244.6 402.7 256 397.9c11.38 4.875 22.63 9.135 33.88 12.89C278.3 434.5 265.5 448 256 448zM256 336c-44.13 0-80.02-35.88-80.02-80S211.9 176 256 176s80.02 35.88 80.02 80S300.1 336 256 336zM416.7 352c-3.626 6.625-19 11.88-43.63 11c2.751-12.1 5.126-26.38 6.751-40.13c7.752-6.25 15-12.63 21.88-19.12C416.8 327.2 420.7 344.8 416.7 352zM401.7 208.2c-6.876-6.5-14.13-12.87-21.88-19.12c-1.625-13.5-3.876-26.88-6.751-40.25c1.875 0 4.001-.375 5.751-.375c21.5 0 34.51 5.375 37.88 11.5C420.7 167.2 416.8 184.8 401.7 208.2z"/></svg>                
+    </div>
+</div>
+</div>
 </div>

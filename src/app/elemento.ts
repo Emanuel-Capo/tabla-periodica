@@ -4,7 +4,10 @@ export interface Elemento {
     nAtom    :number,
     tipo     :string,
     diatomico?:boolean,
-    valencia?:number[],
+    valenciaM?:number[],
     valenciaNM?:number[],
-    nomenclatura?:string    
+    valenciaH?:number,
+    nomenclatura?:string,
+    acEspecial3?:string[],
+    acEspecial5?:string[]
 }

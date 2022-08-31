@@ -16,28 +16,32 @@ export class ReaccionesComponent implements OnInit {
 simbolo:'',
 nAtom:0,
 tipo:'',
-valencia:[],
+valenciaM:[],
+valenciaNM:[],
+valenciaH:undefined,
 diatomico:false,
 nomenclatura:''}
 
 @Input() itsOK:boolean=false
-
-valElem!:number
-reaccionForm!:string
 
 metales:Elemento[]=[]
 noMetales:Elemento[]=[]
 noMetalesHid:Elemento[]=[]
 salMetal!:Elemento
 salNoMetal!:Elemento
-valSalMetal!:number
-valSalNoMetal!:number
+
+valM!:number
+valNM!:number
+valH!:number
+reaccionForm!:string
+acidoEsp!:number
 
 miFormulario:FormGroup=this.fb.group({
-valencia:[,Validators.required],
 reaccion:['',Validators.required],
+valencia:[,Validators.required],
+acidoEsp:null,
 salElem:{},
-salValencia:0
+salValencia:[0]
 })
 
 
@@ -45,29 +49,61 @@ salValencia:0
 
   ngOnInit(): void {
     this.listaTipo()
+    this.validar()     
+  }
+
+  validar(){
+    this.miFormulario.get('reaccion')!.valueChanges.subscribe(R => {
+    if (R==='sal' || R==='sal de hidracido') {
+      this.miFormulario.controls['salValencia'].setValidators([Validators.required, Validators.min(1)]);
+    } else {
+      this.miFormulario.controls['salValencia'].clearValidators();
+    }
+    this.miFormulario.controls['salValencia'].updateValueAndValidity();
+
+    if ((R==='acido' || R==='sal') && (this.esElem('As')||this.esElem('P')||this.esElemSal('As')||this.esElemSal('P'))) {
+      this.miFormulario.controls['acidoEsp'].setValidators([Validators.required, Validators.min(1)]);
+    } else {
+      this.miFormulario.controls['acidoEsp'].clearValidators();
+    }
+    this.miFormulario.controls['acidoEsp'].updateValueAndValidity();
+  });
   }
 
   listaTipo(){
     for (const elem of this.elementos) {
-      if (elem.tipo=='M' && elem.valencia){this.metales.push(elem)}
-      if (elem.tipo=='NM' && elem.valencia){this.noMetales.push(elem)}
-      if (elem.simbolo=='S' || elem.simbolo=='F' || elem.simbolo=='Cl' || elem.simbolo=='Br' || elem.simbolo=='I'){this.noMetalesHid.push(elem)}
+      if (elem.valenciaM){this.metales.push(elem)}
+      if (elem.valenciaNM){this.noMetales.push(elem)}
+      if (elem.valenciaH){this.noMetalesHid.push(elem)}
     }
   }
 
+
+ 
+
+
+
 guardar(){
   this.itsOK=true
-  this.valElem=this.miFormulario.value.valencia
-  this.reaccionForm=this.miFormulario.value.reaccion
-  if (this.reaccionF('acido ')){this.elemento.valencia=this.elemento.valenciaNM}
+  this.reaccionForm=this.miFormulario.value.reaccion  
+  if (this.reaccion('oxido basico') || this.reaccion('hidroxido'))
+  {this.valM=this.miFormulario.value.valencia}
+  if (this.reaccion('anhidrido') || this.reaccion('acido'))
+  {this.valNM=this.miFormulario.value.valencia;
+  this.acidoEsp=this.miFormulario.value.acidoEsp}
+  if (this.reaccion('hidracido'))
+  {this.valH=this.miFormulario.value.valencia}
   if (this.reaccion('sal') || this.reaccion('sal de hidracido')){this.sal()}
   this.reset()
+
+  console.log(this.acidoEsp)
 }
 
 reset(){
   this.miFormulario.reset({
     valencia:null,
     reaccion:'',
+    acidoEsp:null,
     salElem:{},
     salValencia:0
     })
@@ -85,16 +121,17 @@ reaccionF(tipo:string):boolean{
 sal(){
   if (this.elemento.tipo=='M'){
     this.salMetal=this.elemento
-    this.valSalMetal=this.miFormulario.value.valencia
+    this.valM=this.miFormulario.value.valencia
     this.salNoMetal=this.miFormulario.value.salElem
-    this.valSalNoMetal=this.miFormulario.value.salValencia
+    this.valNM=this.miFormulario.value.salValencia
   }
   if (this.elemento.tipo!=='M'){
     this.salNoMetal=this.elemento
-    this.valSalNoMetal=this.miFormulario.value.valencia
+    this.valNM=this.miFormulario.value.valencia
     this.salMetal=this.miFormulario.value.salElem
-    this.valSalMetal=this.miFormulario.value.salValencia
+    this.valM=this.miFormulario.value.salValencia
   }
+  this.acidoEsp=this.miFormulario.value.acidoEsp
 }
 
 diatom():boolean{
@@ -102,16 +139,14 @@ return this.elemento.diatomico==true
 }
 
 par(tipo:string):boolean{
-  if (tipo=='e') return (this.valElem%2)==0
-  if (tipo=='m') return (this.valSalMetal%2)==0
-  if (tipo=='nm')return (this.valSalNoMetal%2)==0
+  if (tipo=='m') return (this.valM%2)==0
+  if (tipo=='nm')return (this.valNM%2)==0
   else return false
 }
 
 siEs(tipo:string, n:number):boolean{
-  if (tipo=='e') return (this.valElem==n)
-  if (tipo=='m') return (this.valSalMetal==n)
-  if (tipo=='nm')return (this.valSalNoMetal==n)
+  if (tipo=='m') return (this.valM==n)
+  if (tipo=='nm')return (this.valNM==n)
   else return false
 }
 
@@ -119,28 +154,30 @@ esElem(el:string):boolean{
   return (this.elemento.simbolo==el)
 }
 
-metal():boolean{
-  return (this.elemento.tipo=='M') 
+esElemSal(el:string):boolean{
+  return (this.miFormulario.value.salElem.simbolo==el)
 }
 
-formaHidracido():boolean{
- return (this.esElem('S') || this.esElem('F') || this.esElem('Cl') || this.esElem('Br') || this.esElem('I'))
+esEsp(n:number):boolean{
+  return (this.acidoEsp==n)
 }
 
 
 valLength(tipo:string, n:number):boolean{
-  if (tipo=='e') return this.elemento.valencia?.length==n
-  if (tipo=='m') return this.salMetal.valencia?.length==n
-  if (tipo=='nm') return this.salNoMetal.valencia?.length==n
+  if (tipo=='em') return this.elemento.valenciaM?.length==n
+  if (tipo=='enm') return this.elemento.valenciaNM?.length==n
+  if (tipo=='sm') return this.salMetal.valenciaM?.length==n
+  if (tipo=='snm') return this.salNoMetal.valenciaNM?.length==n
   else return false
 }
 
 esVal(tipo:string, pos:number):boolean{
-  if (tipo=='e') return (this.valElem==this.elemento.valencia![pos])
-  if (tipo=='m') return (this.valSalMetal==this.salMetal.valencia![pos])
-  if (tipo=='nm') return (this.valSalNoMetal==this.salNoMetal.valencia![pos])
+  if (tipo=='em') return (this.valM==this.elemento.valenciaM![pos])
+  if (tipo=='enm') return (this.valNM==this.elemento.valenciaNM![pos])
+  if (tipo=='sm') return (this.valM==this.salMetal.valenciaM![pos])
+  if (tipo=='snm') return (this.valNM==this.salNoMetal.valenciaNM![pos])
   else return false
-}
+} 
 
 
 }
